@@ -12,6 +12,7 @@ class WebScrapping
 		 createTable
 		@arr_cat=[]
 		@arr_res=[]
+		@cnt=1
 	end
 	#Fetch categories from website
 	def getCat      
@@ -46,14 +47,14 @@ class WebScrapping
 	#store recipe in datbase
 	def storeRec(link,catg) 
 		res_links = Nokogiri::HTML(open(link))
-		i=0
+		
 		res_links.css('div.topSection h3 a').each do |res|
 			arr=[]
 			arr.push res.text 
 			arr.push res['href']	
 		    @arr_res.push arr
-			@db.execute 'insert into recipe values (?, ? ,?, ?,?,?)', i, arr[0], arr[1],catg,'',''
-			i += 1
+			@db.execute 'insert into recipe values (?, ? ,?, ?,?,?)', @cnt, arr[0], arr[1],catg,'',''
+			@cnt += 1
 
 		end
 
